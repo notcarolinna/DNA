@@ -23,10 +23,6 @@ std::string getLetraComplementar(char letraConsecutiva, char letraAnalisada) {
 
 int main() {
 
-	// Podemos fazer uma alteração para ler todos os arquivos simultaneamente
-	// em vez de digitar um por vez, isso vai deixar mais fácil para o usuário
-	// obter os dados.
-
 	std::ifstream inputFile("teste.txt");
 	if (!inputFile) {
 		std::cerr << "Erro ao abrir o arquivo." << std::endl;
@@ -42,14 +38,16 @@ int main() {
 		char letraConsecutiva = cadeiaDNA[0];
 		int repeticoes = 1;
 
-		for (size_t i = 1; i < cadeiaDNA.length(); i++) {
-			std::string log = "";
+		for (size_t i = 1; i < cadeiaDNA.length(); i++) { // percorre toda a cadeia de DNA
+
+			std::string simplificacao = ""; // armazena o resultado da simplificação
+
 			for (int j = 0; j < repeticoes; j++) {
-				log += letraConsecutiva;
+				simplificacao += letraConsecutiva;
 			}
 
 			// A linha abaixo mostra todo o processo de simplificação da cadeia de DNA
-			// std::cout << log << " " << cadeiaDNA.substr(i) << std::endl;
+			std::cout << simplificacao << " " << cadeiaDNA.substr(i) << std::endl;
 
 			char letraAnalisada = cadeiaDNA[i];
 
@@ -59,16 +57,20 @@ int main() {
 			else {
 				std::string letraComplementar = getLetraComplementar(letraConsecutiva, letraAnalisada);
 				letraConsecutiva = (pow(-1, repeticoes) == 1) ? letraAnalisada : letraComplementar[0];
+
+				// Verifica se o número de repetições é par ou ímpar
 				repeticoes = 1;
 			}
 		}
 
+		// exibição do resultado da simplificação
 		std::string result = "";
 		for (int i = 0; i < repeticoes; i++) {
 			result += letraConsecutiva;
 		}
 		std::cout << result << std::endl;
 	}
+
 	else {
 		std::cerr << "Erro ao ler o arquivo." << std::endl;
 		inputFile.close();
