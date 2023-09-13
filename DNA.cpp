@@ -5,25 +5,26 @@
 #include <chrono>
 #include <iomanip>
 
-std::string getLetraComplementar(char letraConsecutiva, char letraAnalisada) {
-	if (letraConsecutiva == 'A') {
-		if (letraAnalisada == 'D') return "N";
-		else if (letraAnalisada == 'N') return "D";
+char resultadoFusao(char primeiraLetra, char segundaLetra) {
+	if (primeiraLetra == 'A') {
+		if (segundaLetra == 'D') return 'N';
+		else if (segundaLetra == 'N') return 'D';
 	}
-	else if (letraConsecutiva == 'D') {
-		if (letraAnalisada == 'A') return "N";
-		else if (letraAnalisada == 'N') return "A";
+	else if (primeiraLetra == 'D') {
+		if (segundaLetra == 'A') return 'N';
+		else if (segundaLetra == 'N') return 'A';
 	}
-	else if (letraConsecutiva == 'N') {
-		if (letraAnalisada == 'A') return "D";
-		else if (letraAnalisada == 'D') return "A";
+	else if (primeiraLetra == 'N') {
+		if (segundaLetra == 'A') return 'D';
+		else if (segundaLetra == 'D') return 'A';
 	}
-	throw std::invalid_argument("letraConsecutiva ou letraAnalisada invalida.");
+	throw std::invalid_argument("primeiraLetra ou segundaLetra invalida.");
 }
 
 int main() {
 
-	std::ifstream inputFile("teste.txt");
+	std::ifstream inputFile("caso100k.txt");
+
 	if (!inputFile) {
 		std::cerr << "Erro ao abrir o arquivo." << std::endl;
 		return 1;
@@ -35,42 +36,30 @@ int main() {
 
 	if (std::getline(inputFile, cadeiaDNA)) {
 		inputFile.close();
-		char letraConsecutiva = cadeiaDNA[0];
-		int repeticoes = 1;
 
-		for (size_t i = 1; i < cadeiaDNA.length(); i++) { // percorre toda a cadeia de DNA
+		//std::cout << cadeiaDNA << std::endl;
 
-			std::string simplificacao = ""; // armazena o resultado da simplificação
+		int i = 0;
 
-			for (int j = 0; j < repeticoes; j++) {
-				simplificacao += letraConsecutiva;
-			}
+		while (i < cadeiaDNA.length() - 1) {
+			char primeiraLetra = cadeiaDNA[i];
+			i++;
+			char segundaLetra = cadeiaDNA[i];
 
-			// A linha abaixo mostra todo o processo de simplificação da cadeia de DNA
-			std::cout << simplificacao << " " << cadeiaDNA.substr(i) << std::endl;
+			//std::cout << "primeira " << primeiraLetra << std::endl;
+			//std::cout << "segunda " << segundaLetra << std::endl;
 
-			char letraAnalisada = cadeiaDNA[i];
+			if (primeiraLetra != segundaLetra) {
 
-			if (letraAnalisada == letraConsecutiva) {
-				repeticoes += 1;
-			}
-			else {
-				std::string letraComplementar = getLetraComplementar(letraConsecutiva, letraAnalisada);
-				letraConsecutiva = (pow(-1, repeticoes) == 1) ? letraAnalisada : letraComplementar[0];
-
-				// Verifica se o número de repetições é par ou ímpar
-				repeticoes = 1;
+				char fusao = resultadoFusao(primeiraLetra, segundaLetra);
+				cadeiaDNA.erase(i - 1, 2);
+				i = 0;	
+				cadeiaDNA += fusao;
 			}
 		}
-
-		// exibição do resultado da simplificação
-		std::string result = "";
-		for (int i = 0; i < repeticoes; i++) {
-			result += letraConsecutiva;
-		}
-		std::cout << result << std::endl;
+		//Resultado
+		std::cout << cadeiaDNA << std::endl;
 	}
-
 	else {
 		std::cerr << "Erro ao ler o arquivo." << std::endl;
 		inputFile.close();
