@@ -23,7 +23,7 @@ char resultadoFusao(char primeiraLetra, char segundaLetra) {
 
 int main() {
 
-	std::ifstream inputFile("caso100k.txt");
+	std::ifstream inputFile("caso30000k.txt");
 
 	if (!inputFile) {
 		std::cerr << "Erro ao abrir o arquivo." << std::endl;
@@ -34,10 +34,8 @@ int main() {
 
 	auto start = std::chrono::high_resolution_clock::now();
 
-	if (std::getline(inputFile, cadeiaDNA)) {
+	if (inputFile >> cadeiaDNA) {
 		inputFile.close();
-
-		//std::cout << cadeiaDNA << std::endl;
 
 		int i = 0;
 
@@ -46,20 +44,21 @@ int main() {
 			i++;
 			char segundaLetra = cadeiaDNA[i];
 
-			//std::cout << "primeira " << primeiraLetra << std::endl;
-			//std::cout << "segunda " << segundaLetra << std::endl;
-
 			if (primeiraLetra != segundaLetra) {
-
 				char fusao = resultadoFusao(primeiraLetra, segundaLetra);
 				cadeiaDNA.erase(i - 1, 2);
-				i = 0;	
+
+				if (i < 2)
+					i = 0;
+				else
+					i = i - 2;
+
 				cadeiaDNA += fusao;
 			}
 		}
-		//Resultado
 		std::cout << cadeiaDNA << std::endl;
 	}
+
 	else {
 		std::cerr << "Erro ao ler o arquivo." << std::endl;
 		inputFile.close();
