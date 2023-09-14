@@ -24,7 +24,7 @@ char resultadoFusao(char primeiraLetra, char segundaLetra) {
 
 int main() {
 
-	std::ifstream inputFile("caso1000k.txt");
+	std::ifstream inputFile("caso10000k.txt");
 
 	if (!inputFile) {
 		std::cerr << "Erro ao abrir o arquivo." << std::endl;
@@ -42,8 +42,8 @@ int main() {
 		inputFile.close();
 
 		int i = 0;
-		std::vector<char> tempstr;
-		int counter = 0;
+		int inicioString = 0;
+		std::string tempstr;
 
 
 		while (i < cadeiaDNA.length() - 1) {
@@ -54,30 +54,30 @@ int main() {
 
 			if (primeiraLetra != segundaLetra) {
 				char fusao = resultadoFusao(primeiraLetra, segundaLetra);
-				cadeiaDNA.erase(i - 1, 2);
-				if (i < 3)
-					i = 0;
-				else
-					i = i - 3;
-				// cadeiaDNA += fusao;
-				tempstr.push_back(fusao);
+
+				if (i < inicioString + 2) {
+					inicioString += 2;
+					i = inicioString;
+				}
+				else {
+					inicioString += 2;
+					cadeiaDNA[i] = primeiraLetra;
+				}
+				cadeiaDNA += fusao;
+				// tempstr += fusao;
 			}
 
-			if ((i == cadeiaDNA.length() - 2 || cadeiaDNA.length() <= 1) && !tempstr.empty())
-			{
-				std::string str = std::string(tempstr.begin(), tempstr.end());
+			/*if ((i >= cadeiaDNA.length() - 1) && !tempstr.empty()) {
+				cadeiaDNA.erase(0, inicioString);
+				cadeiaDNA += tempstr;
 				tempstr.clear();
-				cadeiaDNA += str;
-
-				//std::cout << "Add " << str << std::endl;
-			}
-
-			//std::cout << "i = " << i << " | " << cadeiaDNA << std::endl;
+				i -= inicioString;
+				inicioString = 0;
+			}*/
 
 		}
-		std::cout << cadeiaDNA << std::endl;
+		std::cout << cadeiaDNA.substr(inicioString) << std::endl;
 	}
-
 	else {
 		std::cerr << "Erro ao ler o arquivo." << std::endl;
 		inputFile.close();
