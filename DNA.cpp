@@ -53,21 +53,15 @@ int main() {
 
 			// Processo de simplificação
 			if (primeiraLetra != segundaLetra) {
-				// Chamada da função para retornar a letra resultante
 				char fusao = resultadoFusao(primeiraLetra, segundaLetra);
 
 				if (i < inicioString + 2) {
 					inicioString += 2;
-					i = inicioString; // Reinicia a iteração  a partir do ponto onde a próxima fusão será aplicada
+					i = inicioString; 
 				}
 				else {
 					inicioString += 2;
 					cadeiaDNA[i] = primeiraLetra;
-					/*
-					A próxima primeira letra do par a ser analisado é armazenado na posição inicial
-					da cadeia de caracteres, que por sua vez recebe a variável inicioString que armazena
-					a posição onde a última simplificação aconteceu
-					*/
 				}
 				cadeiaDNA += fusao;
 
