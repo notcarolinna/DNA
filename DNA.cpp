@@ -1,10 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <cmath>
 #include <chrono>
 #include <iomanip>
-#include <vector>
 
 char resultadoFusao(char primeiraLetra, char segundaLetra) {
 	if (primeiraLetra == 'A') {
@@ -24,8 +22,7 @@ char resultadoFusao(char primeiraLetra, char segundaLetra) {
 
 int main() {
 
-	std::ifstream inputFile("caso10000k.txt");
-
+	std::ifstream inputFile("caso30000k.txt");
 	if (!inputFile) {
 		std::cerr << "Erro ao abrir o arquivo." << std::endl;
 		return 1;
@@ -45,26 +42,38 @@ int main() {
 		int inicioString = 0;
 		std::string tempstr;
 
+		//std::cout << cadeiaDNA.substr(inicioString) << std::endl;
 
 		while (i < cadeiaDNA.length() - 1) {
+
+			// Seleciona as letras para comparação
 			char primeiraLetra = cadeiaDNA[i];
 			i++;
 			char segundaLetra = cadeiaDNA[i];
 
-
+			// Processo de simplificação
 			if (primeiraLetra != segundaLetra) {
+				// Chamada da função para retornar a letra resultante
 				char fusao = resultadoFusao(primeiraLetra, segundaLetra);
 
 				if (i < inicioString + 2) {
 					inicioString += 2;
-					i = inicioString;
+					i = inicioString; // Reinicia a iteração  a partir do ponto onde a próxima fusão será aplicada
 				}
 				else {
 					inicioString += 2;
 					cadeiaDNA[i] = primeiraLetra;
+					/*
+					A próxima primeira letra do par a ser analisado é armazenado na posição inicial
+					da cadeia de caracteres, que por sua vez recebe a variável inicioString que armazena
+					a posição onde a última simplificação aconteceu
+					*/
 				}
 				cadeiaDNA += fusao;
+
+				// Para otimizar a memória gasta, descomentar a linha abaixo e o bloco if seguinte e comentar a linha acima.
 				// tempstr += fusao;
+				//std::cout << cadeiaDNA.substr(inicioString) << std::endl;
 			}
 
 			/*if ((i >= cadeiaDNA.length() - 1) && !tempstr.empty()) {
