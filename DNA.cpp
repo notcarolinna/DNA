@@ -33,7 +33,7 @@ int main() {
 	auto start = std::chrono::high_resolution_clock::now();
 
 	if (inputFile >> cadeiaDNA) {
-
+		
 		std::cout << cadeiaDNA.length() << std::endl;
 
 		inputFile.close();
@@ -53,16 +53,19 @@ int main() {
 
 			// Processo de simplificação
 			if (primeiraLetra != segundaLetra) {
+
+				// Chamada da função para retornar a letra resultante
 				char fusao = resultadoFusao(primeiraLetra, segundaLetra);
 
-				if (i < inicioString + 2) {
+				if (i < inicioString + 2) { // Caso não tenha letras repetidas antes do sinalizador
 					inicioString += 2;
-					i = inicioString; 
+					i = inicioString; // Reinicia a iteração  a partir do ponto onde a próxima fusão será aplicada
 				}
-				else {
+				else { // Caso tenha letras repetidas antes do sinalizador
 					inicioString += 2;
 					cadeiaDNA[i] = primeiraLetra;
 				}
+
 				cadeiaDNA += fusao;
 
 				// Para otimizar a memória gasta, descomentar a linha abaixo e o bloco if seguinte e comentar a linha acima.
